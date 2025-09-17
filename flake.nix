@@ -76,9 +76,7 @@
           caelestia-cli = caelestia-cli.packages.${pkgs.system}.default;
         };
 
-        # Varianten
-        # with-cli = caelestia-shell.override { withCli = true; };
-        # debug = caelestia-shell.override { debug = true; };
+        cli = caelestia-cli.packages.${pkgs.system}.default;
 
         default = qml-plugin;
       });
