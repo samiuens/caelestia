@@ -1,14 +1,12 @@
 {
-  description = "Desktop shell for Caelestia dots";
+  description = "Caelestia QML Plugin - Desktop shell for Caelestia dots";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-
     quickshell = {
       url = "git+https://git.outfoxxed.me/outfoxxed/quickshell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
     caelestia-cli = {
       url = "github:caelestia-dots/cli";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -20,8 +18,10 @@
     {
       self,
       nixpkgs,
+      quickshell,
+      caelestia-cli,
       ...
-    }@inputs:
+    }:
     let
       forAllSystems =
         fn: nixpkgs.lib.genAttrs nixpkgs.lib.platforms.linux (system: fn nixpkgs.legacyPackages.${system});
@@ -30,21 +30,57 @@
       formatter = forAllSystems (pkgs: pkgs.alejandra);
 
       packages = forAllSystems (pkgs: rec {
-        caelestia-shell = pkgs.callPackage ./nix {
+        qml-plugin = pkgs.stdenv.mkDerivation {
+          name = "caelestia-qml-plugin";
+          src = ./.;
+
+          nativeBuildInputs = with pkgs; [
+            cmake
+            ninja
+            pkg-config
+          ];
+
+          buildInputs = with pkgs; [
+            qt6.qtmultimedia
+            aubio
+          ];
+
+          dontWrapQtApps = true;
+
+          cmakeFlags = [
+            "-DCMAKE_BUILD_TYPE=RelWithDebInfo"
+            "-DENABLE_MODULES=plugin"
+            "-DINSTALL_QMLDIR=${placeholder "out"}/lib/qt6/qml"
+            "-DVERSION=1.0.0"
+            "-DGIT_REVISION=local"
+          ];
+
+          meta = {
+            description = "Caelestia QML Plugin";
+            homepage = "https://github.com/samiuens/caelestia";
+            license = pkgs.lib.licenses.gpl3Only;
+          };
+        };
+
+        shell = pkgs.callPackage ./nix {
           rev = self.rev or self.dirtyRev;
           stdenv = pkgs.clangStdenv;
-          quickshell = inputs.quickshell.packages.${pkgs.system}.default.override {
+          quickshell = quickshell.packages.${pkgs.system}.default.override {
             withX11 = false;
             withI3 = false;
           };
           app2unit = pkgs.callPackage ./nix/app2unit.nix { inherit pkgs; };
-          caelestia-cli = inputs.caelestia-cli.packages.${pkgs.system}.default;
+          caelestia-cli = caelestia-cli.packages.${pkgs.system}.default;
         };
-        with-cli = caelestia-shell.override { withCli = true; };
-        debug = caelestia-shell.override { debug = true; };
-        default = caelestia-shell;
+
+        # Varianten
+        # with-cli = caelestia-shell.override { withCli = true; };
+        # debug = caelestia-shell.override { debug = true; };
+
+        default = qml-plugin;
       });
 
+      # Development Shell
       devShells = forAllSystems (pkgs: {
         default =
           let
