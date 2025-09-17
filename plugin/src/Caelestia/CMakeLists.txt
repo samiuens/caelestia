@@ -1,6 +1,5 @@
 find_package(Qt6 REQUIRED COMPONENTS Core Qml Gui Quick Concurrent Sql)
 find_package(PkgConfig REQUIRED)
-pkg_check_modules(Qalculate IMPORTED_TARGET libqalculate REQUIRED)
 pkg_check_modules(Pipewire IMPORTED_TARGET libpipewire-0.3 REQUIRED)
 pkg_check_modules(Aubio IMPORTED_TARGET aubio REQUIRED)
 pkg_check_modules(Cava IMPORTED_TARGET cava REQUIRED)
@@ -41,14 +40,12 @@ qml_module(caelestia
     URI Caelestia
     SOURCES
         cutils.hpp cutils.cpp
-        qalculator.hpp qalculator.cpp
         appdb.hpp appdb.cpp
         requests.hpp requests.cpp
     LIBRARIES
         Qt::Gui
         Qt::Quick
         Qt::Sql
-        PkgConfig::Qalculate
 )
 
 add_subdirectory(Internal)
