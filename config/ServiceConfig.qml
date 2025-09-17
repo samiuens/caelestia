@@ -10,10 +10,5 @@ JsonObject {
     property real audioIncrement: 0.1
     property bool smartScheme: true
     property string defaultPlayer: "Spotify"
-    property list<var> playerAliases: [
-        {
-            "from": "com.github.th_ch.youtube_music",
-            "to": "YT Music"
-        }
-    ]
+    property list<var> playerAliases: []
 }

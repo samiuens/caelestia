@@ -15,7 +15,7 @@ RowLayout {
         Layout.fillWidth: true
         spacing: Appearance.spacing.normal
 
-        StyledRect {
+        /*StyledRect {
             Layout.fillWidth: true
             implicitHeight: weather.implicitHeight
 
@@ -53,7 +53,7 @@ RowLayout {
 
                 lock: root.lock
             }
-        }
+        }*/
     }
 
     Center {
@@ -64,7 +64,7 @@ RowLayout {
         Layout.fillWidth: true
         spacing: Appearance.spacing.normal
 
-        StyledRect {
+        /*StyledRect {
             Layout.fillWidth: true
             implicitHeight: resources.implicitHeight
 
@@ -88,6 +88,6 @@ RowLayout {
             NotifDock {
                 lock: root.lock
             }
-        }
+        }*/
     }
 }

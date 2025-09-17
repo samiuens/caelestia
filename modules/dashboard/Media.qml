@@ -521,19 +521,6 @@ Item {
 
         implicitWidth: visualiser.width
         implicitHeight: visualiser.height
-
-        AnimatedImage {
-            anchors.centerIn: parent
-
-            width: visualiser.width * 0.75
-            height: visualiser.height * 0.75
-
-            playing: Players.active?.isPlaying ?? false
-            speed: Audio.beatTracker.bpm / 300
-            source: Paths.absolutePath(Config.paths.mediaGif)
-            asynchronous: true
-            fillMode: AnimatedImage.PreserveAspectFit
-        }
     }
 
     component PlayerIcon: Loader {
