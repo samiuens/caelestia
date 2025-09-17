@@ -43,6 +43,9 @@
           buildInputs = with pkgs; [
             qt6.qtmultimedia
             aubio
+            pipewire
+            libcava
+            fftw
           ];
 
           dontWrapQtApps = true;
