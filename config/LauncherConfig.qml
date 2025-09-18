@@ -9,7 +9,7 @@ JsonObject {
     property string actionPrefix: ">"
     property bool enableDangerousActions: false // Allow actions that can cause losing data, like shutdown, reboot and logout
     property int dragThreshold: 50
-    property bool vimKeybinds: false
+    property bool vimKeybinds: true
     property list<string> hiddenApps: []
     property UseFuzzy useFuzzy: UseFuzzy {}
     property Sizes sizes: Sizes {}
@@ -30,14 +30,6 @@ JsonObject {
     }
 
     property list<var> actions: [
-        {
-            name: "Calculator",
-            icon: "calculate",
-            description: "Do simple math equations (powered by Qalc)",
-            command: ["autocomplete", "calc"],
-            enabled: true,
-            dangerous: false
-        },
         {
             name: "Scheme",
             icon: "palette",
@@ -129,8 +121,8 @@ JsonObject {
         {
             name: "Sleep",
             icon: "bedtime",
-            description: "Suspend then hibernate",
-            command: ["systemctl", "suspend-then-hibernate"],
+            description: "Suspend the system",
+            command: ["systemctl", "suspend"],
             enabled: true,
             dangerous: false
         }
